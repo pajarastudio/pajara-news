@@ -7,27 +7,49 @@ export const dynamic = "force-dynamic";
 
 export async function GET() {
   try {
-    const context = getCloudflareContext();
-    const env = context.env as typeof context.env & {
+    const { env } = getCloudflareContext();
+
+    const runtimeEnv = env as typeof env & {
       NEXT_PUBLIC_SUPABASE_URL?: string;
       NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY?: string;
     };
 
-    const url =
-      process.env.NEXT_PUBLIC_SUPABASE_URL ||
-      env.NEXT_PUBLIC_SUPABASE_URL;
+    const runtimeUrl = runtimeEnv.NEXT_PUBLIC_SUPABASE_URL;
+    const buildUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 
-    const key =
+    const url = (runtimeUrl || buildUrl || "").trim();
+    const key = (
+      runtimeEnv.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
       process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
-      env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+      ""
+    ).trim();
 
-    if (!url || !key) {
-      return NextResponse.json({
-        success: false,
-        step: "environment",
-        urlAvailable: Boolean(url),
-        keyAvailable: Boolean(key),
-      });
+    let validUrl = false;
+
+    try {
+      const parsed = new URL(url);
+      validUrl =
+        (parsed.protocol === "https:" ||
+          parsed.protocol === "http:") &&
+        Boolean(parsed.hostname);
+    } catch {
+      validUrl = false;
+    }
+
+    if (!url || !key || !validUrl) {
+      return NextResponse.json(
+        {
+          success: false,
+          step: "environment",
+          runtimeUrlAvailable: Boolean(runtimeUrl),
+          buildUrlAvailable: Boolean(buildUrl),
+          keyAvailable: Boolean(key),
+          urlValid: validUrl,
+          runtimeUrlValid: isValidUrl(runtimeUrl),
+          buildUrlValid: isValidUrl(buildUrl),
+        },
+        { headers: { "Cache-Control": "no-store" } }
+      );
     }
 
     const supabase = createClient(url, key);
@@ -40,27 +62,50 @@ export async function GET() {
       .limit(1);
 
     if (error) {
-      return NextResponse.json({
-        success: false,
-        step: "supabase-query",
-        error: error.message,
-      });
+      return NextResponse.json(
+        {
+          success: false,
+          step: "supabase-query",
+          error: error.message,
+        },
+        { headers: { "Cache-Control": "no-store" } }
+      );
     }
 
-    return NextResponse.json({
-      success: true,
-      step: "complete",
-      articleFound: Boolean(data?.length),
-      article: data?.[0] ?? null,
-    });
+    return NextResponse.json(
+      {
+        success: true,
+        step: "complete",
+        articleFound: Boolean(data?.length),
+        article: data?.[0] ?? null,
+      },
+      { headers: { "Cache-Control": "no-store" } }
+    );
   } catch (error) {
-    return NextResponse.json({
-      success: false,
-      step: "runtime",
-      error:
-        error instanceof Error
-          ? error.message
-          : "Kesalahan tidak diketahui",
-    });
+    return NextResponse.json(
+      {
+        success: false,
+        step: "runtime",
+        error:
+          error instanceof Error
+            ? error.message
+            : "Kesalahan tidak diketahui",
+      },
+      { headers: { "Cache-Control": "no-store" } }
+    );
+  }
+}
+
+function isValidUrl(value?: string) {
+  if (!value?.trim()) return false;
+
+  try {
+    const parsed = new URL(value.trim());
+    return (
+      (parsed.protocol === "https:" || parsed.protocol === "http:") &&
+      Boolean(parsed.hostname)
+    );
+  } catch {
+    return false;
   }
 }
