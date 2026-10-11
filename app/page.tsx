@@ -111,11 +111,17 @@ async function getArticles(): Promise<Article[]> {
 function formatDate(date: string | null) {
   if (!date) return "Artikel Pajara News";
 
+  const parsedDate = new Date(date);
+
+  if (Number.isNaN(parsedDate.getTime())) {
+    return "Artikel Pajara News";
+  }
+
   return new Intl.DateTimeFormat("id-ID", {
     day: "numeric",
     month: "long",
     year: "numeric",
-  }).format(new Date(date));
+  }).format(parsedDate);
 }
 
 export default async function HomePage() {
@@ -127,22 +133,21 @@ export default async function HomePage() {
     <main>
       <header className="topbar">
         <div className="container nav-inner">
-          <Link href="/" className="brand">
-            <span className="brand-mark">P.</span>
+          <Link href="/" className="brand" aria-label="Pajara News, beranda">
             <span>
-              <strong>PAJARA</strong>
-              <small>NEWS &amp; INSIGHTS</small>
+              <strong>PAJARA NEWS</strong>
+              <small>RUANG WAWASAN &amp; KREATIVITAS</small>
             </span>
           </Link>
 
-          <nav className="nav-links">
+          <nav className="nav-links" aria-label="Navigasi utama">
             <Link href="/">Beranda</Link>
             <a href="#artikel">Artikel</a>
             <a href="#tentang">Tentang</a>
           </nav>
 
           <a className="nav-cta" href="#artikel">
-            Jelajahi Artikel ↗
+            Jelajahi Artikel <span aria-hidden="true">↗</span>
           </a>
         </div>
       </header>
@@ -151,40 +156,44 @@ export default async function HomePage() {
         <div className="hero-copy">
           <span className="eyebrow">
             <span className="eyebrow-dot" />
-            RUANG WAWASAN PAJARA STUDIO
+            DARI TANAH PASUNDAN, UNTUK IDE YANG TERUS TUMBUH
           </span>
 
           <h1>
-            Ide yang baik
+            Setiap ide
             <br />
-            dimulai dari
+            punya ruang
             <br />
-            <span>rasa ingin tahu.</span>
+            <span>untuk tumbuh.</span>
           </h1>
 
           <p>
-            Wawasan, edukasi, dan inspirasi tentang desain,
-            kreativitas, teknologi, dan perjalanan bisnis
-            di dunia digital.
+            Catatan tentang desain, kreativitas, teknologi, dan perjalanan
+            membangun sesuatu yang berarti. Dirangkum untuk menemani proses
+            belajar dan berkarya.
           </p>
 
           <a className="primary-button" href="#artikel">
-            Temukan Wawasan <span>↗</span>
+            Jelajahi Wawasan <span aria-hidden="true">↗</span>
           </a>
 
           <div className="hero-note">
             <span>BERAKAR DI TANAH PASUNDAN</span>
-            <span>•</span>
+            <span aria-hidden="true">•</span>
             <span>BERTUMBUH LEWAT PENGETAHUAN</span>
           </div>
         </div>
 
-        <div className="hero-art">
+        <div
+          className="hero-art"
+          role="img"
+          aria-label="Grafis editorial Pajara News tentang pertumbuhan ide"
+        >
           <div className="art-orbit orbit-one" />
           <div className="art-orbit orbit-two" />
 
           <div className="art-center">
-            <span className="art-small">RUANG UNTUK</span>
+            <span className="art-small">SEBUAH RUANG UNTUK</span>
             <strong>BERTUMBUH.</strong>
             <span className="art-line" />
             <span className="art-caption">
@@ -192,10 +201,8 @@ export default async function HomePage() {
             </span>
           </div>
 
-          <span className="art-number">01 — 26</span>
-          <span className="art-side-label">
-            PAJARA NEWS / INDONESIA
-          </span>
+          <span className="art-number">PAJARA / 01</span>
+          <span className="art-side-label">IDE • KARYA • PERJALANAN</span>
         </div>
       </section>
 
@@ -210,7 +217,7 @@ export default async function HomePage() {
         <div className="section-heading">
           <div>
             <span className="section-label">DARI RUANG REDAKSI</span>
-            <h2 className="news-heading">Wawasan terbaru.</h2>
+            <h2 className="news-heading">Cerita yang layak dibaca.</h2>
           </div>
 
           <span className="article-count">
@@ -226,19 +233,16 @@ export default async function HomePage() {
             <div className="featured-image">
               {featured.cover_image ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={featured.cover_image}
-                  alt={featured.title}
-                />
+                <img src={featured.cover_image} alt={featured.title} />
               ) : (
                 <div className="image-placeholder">
-                  <span>PAJARA</span>
-                  <strong>NEWS.</strong>
-                  <small>IDE • WAWASAN • INSPIRASI</small>
+                  <span>RUANG WAWASAN</span>
+                  <strong>PAJARA.</strong>
+                  <small>IDE • KARYA • PERJALANAN</small>
                 </div>
               )}
 
-              <span className="image-badge">ARTIKEL PILIHAN</span>
+              <span className="image-badge">PILIHAN REDAKSI</span>
             </div>
 
             <div className="featured-copy">
@@ -247,23 +251,31 @@ export default async function HomePage() {
               </span>
 
               <h3 className="news-heading">{featured.title}</h3>
+
               <p>{featured.summary}</p>
 
               <div className="article-meta">
                 <span>{formatDate(featured.published_at)}</span>
-                <span className="read-link">Baca artikel ↗</span>
+                <span className="read-link">
+                  Baca cerita <span aria-hidden="true">↗</span>
+                </span>
               </div>
             </div>
           </Link>
         ) : (
           <div className="empty-state">
-            <span className="empty-icon">✳</span>
+            <span className="empty-icon" aria-hidden="true">
+              ✳
+            </span>
+
             <h3 className="news-heading">
               Cerita pertama sedang disiapkan.
             </h3>
+
             <p>
-              Artikel yang diterbitkan melalui Pajara Admin
-              akan muncul di ruang ini.
+              Artikel yang diterbitkan melalui Pajara Admin akan muncul
+              di ruang ini. Sampai saat itu, selalu ada ide baru untuk
+              ditumbuhkan.
             </p>
           </div>
         )}
@@ -279,10 +291,7 @@ export default async function HomePage() {
                 <div className="card-image">
                   {article.cover_image ? (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={article.cover_image}
-                      alt={article.title}
-                    />
+                    <img src={article.cover_image} alt={article.title} />
                   ) : (
                     <div className="card-placeholder">P.</div>
                   )}
@@ -294,11 +303,12 @@ export default async function HomePage() {
                   </span>
 
                   <h3 className="news-heading">{article.title}</h3>
+
                   <p>{article.summary}</p>
 
                   <div className="article-meta">
                     <span>{formatDate(article.published_at)}</span>
-                    <span>↗</span>
+                    <span aria-hidden="true">↗</span>
                   </div>
                 </div>
               </Link>
@@ -312,15 +322,16 @@ export default async function HomePage() {
           <span className="section-label">TENTANG PAJARA NEWS</span>
 
           <h2 className="news-heading">
-            Pengetahuan punya cara untuk
+            Berakar di tempat kita.
             <br />
-            membawa kita lebih jauh.
+            Bertumbuh melampaui batas.
           </h2>
 
           <p>
-            Pajara News adalah ruang berbagi wawasan dari Pajara
-            Studio, untuk siapa pun yang ingin belajar, berkarya,
-            dan berkembang di dunia digital.
+            Pajara News adalah ruang berbagi wawasan dari Pajara Studio.
+            Tempat untuk merawat rasa ingin tahu, memahami proses kreatif,
+            dan menemukan sudut pandang baru dalam perjalanan berkarya
+            di dunia digital.
           </p>
 
           <span className="about-signature">
