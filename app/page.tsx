@@ -1,4 +1,5 @@
 
+import Image from "next/image";
 import Link from "next/link";
 import { createClient } from "@supabase/supabase-js";
 
@@ -134,6 +135,15 @@ export default async function HomePage() {
       <header className="topbar">
         <div className="container nav-inner">
           <Link href="/" className="brand" aria-label="Pajara News, beranda">
+            <Image
+              src="/icon-192.png"
+              alt="Logo Pajara Studio"
+              className="brand-logo"
+              width={48}
+              height={48}
+              priority
+            />
+
             <span>
               <strong>PAJARA NEWS</strong>
               <small>RUANG WAWASAN &amp; KREATIVITAS</small>
@@ -226,10 +236,7 @@ export default async function HomePage() {
         </div>
 
         {featured ? (
-          <Link
-            href={`/artikel/${featured.slug}`}
-            className="featured-card"
-          >
+          <Link href={`/artikel/${featured.slug}`} className="featured-card">
             <div className="featured-image">
               {featured.cover_image ? (
                 // eslint-disable-next-line @next/next/no-img-element
@@ -273,8 +280,8 @@ export default async function HomePage() {
             </h3>
 
             <p>
-              Artikel yang diterbitkan melalui Pajara Admin akan muncul
-              di ruang ini. Sampai saat itu, selalu ada ide baru untuk
+              Artikel yang diterbitkan melalui Pajara Admin akan muncul di
+              ruang ini. Sampai saat itu, selalu ada ide baru untuk
               ditumbuhkan.
             </p>
           </div>
@@ -330,8 +337,8 @@ export default async function HomePage() {
           <p>
             Pajara News adalah ruang berbagi wawasan dari Pajara Studio.
             Tempat untuk merawat rasa ingin tahu, memahami proses kreatif,
-            dan menemukan sudut pandang baru dalam perjalanan berkarya
-            di dunia digital.
+            dan menemukan sudut pandang baru dalam perjalanan berkarya di
+            dunia digital.
           </p>
 
           <span className="about-signature">
