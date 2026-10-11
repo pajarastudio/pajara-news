@@ -15,6 +15,8 @@
   --serif: "Playfair Display", Georgia, serif;
   --sans: "DM Sans", Arial, sans-serif;
   --container: 1180px;
+  --radius-card: 20px;
+  --radius-large: 28px;
 }
 
 * {
@@ -34,7 +36,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-body::selection {
+::selection {
   background: var(--green);
   color: white;
 }
@@ -159,6 +161,7 @@ img {
   gap: 18px;
   padding: 0 19px;
   border: 1px solid var(--green-dark);
+  border-radius: 999px;
   background: var(--green-dark);
   color: var(--white);
   font-size: 11px;
@@ -261,6 +264,7 @@ img {
   min-height: 430px;
   place-items: center;
   overflow: hidden;
+  border-radius: var(--radius-large);
   background: var(--green-dark);
   color: var(--cream);
   isolation: isolate;
@@ -368,7 +372,9 @@ img {
 }
 
 .intro-strip {
+  overflow: hidden;
   border-block: 1px solid var(--line);
+  border-radius: var(--radius-card);
   background: #efebe2;
 }
 
@@ -427,15 +433,19 @@ img {
   display: grid;
   grid-template-columns: 1.08fr 0.92fr;
   min-height: 380px;
+  overflow: hidden;
   border: 1px solid var(--line);
+  border-radius: var(--radius-card);
   background: var(--paper);
   transition:
     border-color 200ms ease,
-    transform 200ms ease;
+    transform 200ms ease,
+    box-shadow 200ms ease;
 }
 
 .featured-card:hover {
   border-color: rgba(47, 107, 69, 0.55);
+  box-shadow: 0 16px 42px rgba(33, 77, 50, 0.08);
   transform: translateY(-3px);
 }
 
@@ -443,6 +453,7 @@ img {
   position: relative;
   min-height: 360px;
   overflow: hidden;
+  border-radius: var(--radius-card);
   background: #e6e2d7;
 }
 
@@ -468,6 +479,7 @@ img {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  border-radius: var(--radius-card);
   background:
     radial-gradient(ellipse at 70% 25%, rgba(247, 244, 238, 0.12), transparent 35%),
     var(--green-dark);
@@ -499,6 +511,7 @@ img {
   top: 20px;
   left: 20px;
   padding: 10px 12px;
+  border-radius: 999px;
   background: var(--cream);
   color: var(--green-dark);
   font-size: 8px;
@@ -578,11 +591,19 @@ img {
   display: flex;
   min-width: 0;
   flex-direction: column;
-  border-bottom: 1px solid var(--line);
-  transition: transform 200ms ease;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  background: var(--paper);
+  transition:
+    transform 200ms ease,
+    border-color 200ms ease,
+    box-shadow 200ms ease;
 }
 
 .article-card:hover {
+  border-color: rgba(47, 107, 69, 0.5);
+  box-shadow: 0 14px 32px rgba(33, 77, 50, 0.07);
   transform: translateY(-4px);
 }
 
@@ -590,6 +611,7 @@ img {
   position: relative;
   aspect-ratio: 1.23;
   overflow: hidden;
+  border-radius: var(--radius-card);
   background: #e8e4da;
 }
 
@@ -599,6 +621,7 @@ img {
   height: 100%;
   min-height: 180px;
   place-items: center;
+  border-radius: var(--radius-card);
   background: var(--green-dark);
   color: var(--cream);
   font-family: var(--serif);
@@ -611,7 +634,7 @@ img {
   flex: 1;
   flex-direction: column;
   align-items: flex-start;
-  padding: 24px 2px 22px;
+  padding: 24px 22px 22px;
 }
 
 .card-body h3 {
@@ -630,7 +653,9 @@ img {
 
 .empty-state {
   padding: 75px 25px;
+  overflow: hidden;
   border: 1px dashed rgba(33, 77, 50, 0.3);
+  border-radius: var(--radius-card);
   background: rgba(255, 254, 250, 0.5);
   text-align: center;
 }
@@ -662,6 +687,7 @@ img {
 .about-section {
   position: relative;
   overflow: hidden;
+  border-radius: var(--radius-large);
   background: var(--green-dark);
   color: var(--cream);
 }
@@ -725,6 +751,8 @@ img {
 }
 
 .footer {
+  margin-top: 24px;
+  border-radius: var(--radius-card) var(--radius-card) 0 0;
   background: var(--green-deep);
   color: #e5e8df;
 }
@@ -823,6 +851,7 @@ a:focus-visible {
   aspect-ratio: 1.65;
   margin-block: 48px;
   overflow: hidden;
+  border-radius: var(--radius-card);
   background: #e8e4da;
 }
 
@@ -858,6 +887,7 @@ a:focus-visible {
   width: 100%;
   height: auto;
   margin-block: 30px;
+  border-radius: 14px;
 }
 
 .article-body blockquote {
@@ -1006,6 +1036,11 @@ a:focus-visible {
 }
 
 @media (max-width: 540px) {
+  :root {
+    --radius-card: 16px;
+    --radius-large: 22px;
+  }
+
   .container {
     width: calc(100% - 32px);
   }
@@ -1152,7 +1187,7 @@ a:focus-visible {
   }
 
   .card-body {
-    padding-top: 19px;
+    padding: 19px 18px 20px;
   }
 
   .card-body h3 {
