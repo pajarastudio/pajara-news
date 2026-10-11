@@ -1,5 +1,6 @@
 
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@supabase/supabase-js";
@@ -98,13 +99,25 @@ export default async function ArticlePage({
     <main className="article-page">
       <header className="topbar">
         <div className="container nav-inner">
-          <Link href="/" className="brand">
-            <span className="brand-mark">P.</span>
+          <Link
+            href="/"
+            className="brand"
+            aria-label="Pajara News, beranda"
+          >
+            <Image
+              src="/icon-192.png"
+              alt="Logo Pajara Studio"
+              className="brand-logo"
+              width={48}
+              height={48}
+              priority
+            />
             <span>
-              <strong>PAJARA</strong>
-              <small>NEWS & INSIGHTS</small>
+              <strong>PAJARA NEWS</strong>
+              <small>RUANG WAWASAN &amp; KREATIVITAS</small>
             </span>
           </Link>
+
           <Link href="/" className="back-link">
             ← Kembali ke Beranda
           </Link>
@@ -188,7 +201,9 @@ export default async function ArticlePage({
 
       <footer className="footer">
         <div className="container footer-inner">
-          <Link href="/" className="footer-brand">PAJARA NEWS.</Link>
+          <Link href="/" className="footer-brand">
+            PAJARA NEWS.
+          </Link>
           <span>Bagian dari Pajara Studio</span>
           <span>© {new Date().getFullYear()} Pajara Studio</span>
         </div>
