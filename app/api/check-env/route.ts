@@ -3,13 +3,10 @@ import { NextResponse } from "next/server";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 
 export const dynamic = "force-dynamic";
-export const runtime = "edge";
 
 export async function GET() {
   try {
-    const { env } = await getCloudflareContext({
-      async: true,
-    });
+    const { env } = getCloudflareContext();
 
     const runtime = env as typeof env & {
       NEXT_PUBLIC_SUPABASE_URL?: string;
@@ -35,7 +32,6 @@ export async function GET() {
     function validUrl(value: string) {
       try {
         const parsed = new URL(value);
-
         return (
           parsed.protocol === "https:" &&
           parsed.hostname.endsWith(".supabase.co")
@@ -47,14 +43,13 @@ export async function GET() {
 
     return NextResponse.json(
       {
-        marker: "PAJARA_CHECK_ENV_V2",
+        marker: "PAJARA_CHECK_ENV_V3",
         runtimeUrlAvailable: Boolean(runtimeUrl),
         runtimeUrlValid: validUrl(runtimeUrl),
         buildUrlAvailable: Boolean(buildUrl),
         buildUrlValid: validUrl(buildUrl),
         runtimeKeyAvailable: Boolean(runtimeKey),
         buildKeyAvailable: Boolean(buildKey),
-        serverKeyAvailable: Boolean(runtimeKey || buildKey),
       },
       {
         headers: {
@@ -65,7 +60,7 @@ export async function GET() {
   } catch {
     return NextResponse.json(
       {
-        marker: "PAJARA_CHECK_ENV_V2",
+        marker: "PAJARA_CHECK_ENV_V3",
         runtimeError: true,
       },
       {
