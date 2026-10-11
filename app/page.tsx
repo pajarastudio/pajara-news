@@ -22,59 +22,74 @@ const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 
 if (!url || !key) {
-console.error("Konfigurasi Supabase belum tersedia.");
+console.error("PAJARA_DEBUG: Variabel Supabase tidak terbaca.");
 return [];
 }
 
+console.log("PAJARA_DEBUG: Variabel Supabase tersedia.");
+
+try {
 const supabase = createClient(url, key);
 
 const { data, error } = await supabase
-.from("news_articles")
-.select(
-"id, title, slug, summary, cover_image, published_at, category_id"
-)
-.eq("status", "published")
-.order("published_at", { ascending: false })
-.limit(12);
+  .from("news_articles")
+  .select(
+    "id, title, slug, summary, cover_image, published_at, category_id"
+  )
+  .eq("status", "published")
+  .order("published_at", { ascending: false })
+  .limit(12);
 
 if (error) {
-console.error("Gagal mengambil artikel:", error.message);
-return [];
+  console.error("PAJARA_DEBUG: Gagal mengambil artikel:", error.message);
+  return [];
 }
 
 const articles = (data ?? []) as Article[];
+
 const categoryIds = [
-...new Set(
-articles
-.map((article) => article.category_id)
-.filter((id): id is string => Boolean(id))
-),
+  ...new Set(
+    articles
+      .map((article) => article.category_id)
+      .filter((id): id is string => Boolean(id))
+  ),
 ];
 
 if (categoryIds.length === 0) {
-return articles;
+  return articles;
 }
 
 const { data: categories, error: categoryError } = await supabase
-.from("news_categories")
-.select("id, name, slug")
-.in("id", categoryIds);
+  .from("news_categories")
+  .select("id, name, slug")
+  .in("id", categoryIds);
 
 if (categoryError) {
-console.error("Gagal mengambil kategori:", categoryError.message);
-return articles;
+  console.error(
+    "PAJARA_DEBUG: Gagal mengambil kategori:",
+    categoryError.message
+  );
+  return articles;
 }
 
 const categoryMap = new Map(
-(categories ?? []).map((category) => [category.id, category])
+  (categories ?? []).map((category) => [category.id, category])
 );
 
 return articles.map((article) => ({
-...article,
-category: article.category_id
-? categoryMap.get(article.category_id) ?? null
-: null,
+  ...article,
+  category: article.category_id
+    ? categoryMap.get(article.category_id) ?? null
+    : null,
 }));
+
+} catch (error) {
+console.error(
+"PAJARA_DEBUG: Kesalahan koneksi Supabase:",
+error instanceof Error ? error.message : "Kesalahan tidak diketahui"
+);
+return [];
+}
 }
 
 function formatDate(date: string | null) {
@@ -108,7 +123,9 @@ return (
 <a href="#artikel">Artikel</a>
 <a href="#tentang">Tentang</a>
 </nav>
-<a className="nav-cta" href="#artikel">Jelajahi Artikel ↗</a>
+<a className="nav-cta" href="#artikel">
+Jelajahi Artikel ↗
+</a>
 </div>
 </header>
 
@@ -264,7 +281,9 @@ return (
 
   <footer className="footer">
     <div className="container footer-inner">
-      <Link href="/" className="footer-brand">PAJARA NEWS.</Link>
+      <Link href="/" className="footer-brand">
+        PAJARA NEWS.
+      </Link>
       <span>Bagian dari Pajara Studio</span>
       <span>© {new Date().getFullYear()} Pajara Studio</span>
     </div>
