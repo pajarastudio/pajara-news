@@ -1,6 +1,5 @@
 
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap');
-
 @import "tailwindcss";
 
 :root {
@@ -60,6 +59,18 @@ img {
   font-weight: 600;
   letter-spacing: -0.04em;
 }
+
+.news-link,
+.nav-links a {
+  transition: color 180ms ease;
+}
+
+.news-link:hover,
+.nav-links a:hover {
+  color: var(--green);
+}
+
+/* NAVIGATION */
 
 .topbar {
   position: sticky;
@@ -122,15 +133,6 @@ img {
   font-weight: 600;
 }
 
-.news-link,
-.nav-links a {
-  transition: color 180ms ease;
-}
-
-.nav-links a:hover {
-  color: var(--green);
-}
-
 .nav-cta,
 .primary-button {
   display: inline-flex;
@@ -159,6 +161,18 @@ img {
   background: var(--green);
   transform: translateY(-1px);
 }
+
+.back-link {
+  color: var(--green);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.back-link:hover {
+  color: var(--green-dark);
+}
+
+/* HOMEPAGE HERO */
 
 .hero {
   min-height: 580px;
@@ -315,6 +329,8 @@ img {
   transform: rotate(180deg);
 }
 
+/* INTRO STRIP */
+
 .intro-strip {
   background: var(--green-dark);
   color: white;
@@ -340,6 +356,8 @@ img {
   font-family: "Playfair Display", Georgia, serif;
   font-size: 22px;
 }
+
+/* ARTICLE LIST */
 
 .articles-section {
   padding-top: 100px;
@@ -561,6 +579,8 @@ img {
   line-height: 1.8;
 }
 
+/* ABOUT & FOOTER */
+
 .about-section {
   padding: 85px 0;
   background: #e9e8de;
@@ -613,6 +633,138 @@ img {
   color: #c5d0c4;
   font-size: 11px;
 }
+
+/* ARTICLE DETAIL */
+
+.article-detail {
+  max-width: 850px;
+  padding-top: 34px;
+  padding-bottom: 90px;
+}
+
+.breadcrumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.breadcrumbs a:hover {
+  color: var(--green);
+}
+
+.article-header {
+  padding-top: 65px;
+  padding-bottom: 35px;
+}
+
+.article-header h1 {
+  margin: 20px 0;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(38px, 6vw, 62px);
+  line-height: 1.14;
+  letter-spacing: -0.045em;
+  font-weight: 600;
+}
+
+.article-summary {
+  margin: 0;
+  color: #666d64;
+  font-size: 17px;
+  line-height: 1.9;
+}
+
+.article-byline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 27px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.article-byline span:first-child {
+  color: var(--green-dark);
+  font-weight: 700;
+}
+
+.article-cover {
+  margin: 0 0 45px;
+  overflow: hidden;
+  background: #e2e7dc;
+}
+
+.article-cover img {
+  width: 100%;
+  max-height: 520px;
+  object-fit: cover;
+}
+
+.article-body {
+  max-width: 720px;
+  margin: 0 auto;
+  color: #353b34;
+  font-size: 16px;
+  line-height: 2;
+  overflow-wrap: anywhere;
+}
+
+.article-body p {
+  margin: 0 0 25px;
+  white-space: pre-wrap;
+}
+
+.article-body h2 {
+  margin: 48px 0 17px;
+  color: var(--green-dark);
+  font-size: 31px;
+  line-height: 1.3;
+}
+
+.article-body h3 {
+  margin: 35px 0 14px;
+  color: var(--green-dark);
+  font-size: 23px;
+  line-height: 1.4;
+}
+
+.article-end {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 60px;
+  padding: 40px 20px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+
+.end-mark {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: var(--green-dark);
+  color: white;
+  font-family: Georgia, serif;
+  font-size: 27px;
+  font-weight: 700;
+}
+
+.article-end p {
+  margin: 15px 0 22px;
+  color: var(--muted);
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 19px;
+  font-style: italic;
+}
+
+/* TABLET */
 
 @media (max-width: 800px) {
   .nav-inner {
@@ -667,6 +819,8 @@ img {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+
+/* MOBILE */
 
 @media (max-width: 560px) {
   .container {
@@ -795,5 +949,45 @@ img {
     padding-bottom: 23px;
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .article-detail {
+    padding-top: 25px;
+    padding-bottom: 65px;
+  }
+
+  .article-header {
+    padding-top: 42px;
+    padding-bottom: 28px;
+  }
+
+  .article-header h1 {
+    font-size: 39px;
+  }
+
+  .article-summary {
+    font-size: 15px;
+  }
+
+  .article-body {
+    font-size: 15px;
+    line-height: 1.95;
+  }
+
+  .article-body h2 {
+    margin-top: 38px;
+    font-size: 27px;
+  }
+
+  .article-body h3 {
+    font-size: 21px;
+  }
+
+  .article-cover {
+    margin-bottom: 32px;
+  }
+
+  .back-link {
+    font-size: 11px;
   }
 }
