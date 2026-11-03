@@ -354,6 +354,15 @@ export default async function HomePage() {
           </Link>
 
           <span>Bagian dari Pajara Studio</span>
+
+          <a
+            href="https://pajara-website.pajarastd.workers.dev/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Pajara Website ↗
+          </a>
+
           <span>© {new Date().getFullYear()} Pajara Studio</span>
         </div>
       </footer>
